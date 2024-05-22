@@ -7,8 +7,8 @@ import Lab3 from "./Lab3";
 export default function Labs() {
     return (
         <div>
-            <h1>Xinyi Xu - SEC02</h1>
-            <a id="wd-github" href="https://github.com/last-dino/kanbas-react-web-app">Github Repo</a>
+            <h1>Web Development - SEC02</h1>
+            <h2>Xinyi Xu</h2>
             <TOC />
             <Routes>
                 <Route path="/" element={<Navigate to="Lab1" />} />
