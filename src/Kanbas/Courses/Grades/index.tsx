@@ -20,8 +20,15 @@ export default function Grades() {
                     <label htmlFor="wd-grades-search-student" className="col-form-label fw-bold">Student Names</label>
                     <select id="wd-grades-search-student" className="form-select text-secondary ps-5" style={{ position: "relative" }}>
                         <option selected>Search Students</option>
-                        {enrollments.map((enrollment: any) => 
-                            <option value={enrollment._id}>{enrollment.user}</option>)}
+                        {enrollments.map((enrollment: any) => {
+                            const user = users.find((user: any) => user._id === enrollment.user);
+                            if (!user) {
+                                return null; // Skip rendering if user is not found
+                            }
+                            return (
+                                <option value={user._id}>{user.firstName} {user.lastName}</option>   
+                            );
+                        })}
                     </select>
                     <CiSearch className="position-absolute ms-3 fs-4" style={{ transform: "translateY(-135%)" }}/>
                 </div>
