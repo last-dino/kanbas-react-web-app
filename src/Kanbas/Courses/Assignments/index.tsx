@@ -3,8 +3,13 @@ import { LuFileSignature } from "react-icons/lu";
 import AssignmentsControls from "./AssignmentsControls";
 import LessonControlButtons from "../Modules/LessonControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
+import { Link, useParams } from "react-router-dom";
+import * as db from "../../Database";
 
 export default function Assignments() {
+    const { cid } = useParams();
+    const assignments = db.assignments;
+
     return (
         <div id="wd-assignments" className="vh-100">
             <AssignmentsControls /><br /><br /><br /><br />
@@ -17,51 +22,24 @@ export default function Assignments() {
                         <AssignmentControlButtons />
                     </div>
                     <ul className="list-group rounded-0">
-                        <li className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex">
-                            <BsGripVertical className="me-2 fs-3 align-self-center" />  
-                            <LuFileSignature className="ms-2 me-4 fs-3 align-self-center text-success" />
-                            <div className="align-self-center">
-                                <a className="wd-assignment-link text-dark no-underline fw-bold" 
-                                href="#/Kanbas/Courses/1234/Assignments/1">
-                                A1 - ENV + HTML
-                                </a><br/>
-                                <h6><span className="text-danger">Multiple Modules</span> | Not available until May 29 at 12:00am |<br/>
-                                Due Jun 5 at 11:59pm | 23 pts</h6>
-                            </div>  
-                            <div className="align-self-center flex-fill">
-                                <LessonControlButtons />
-                            </div>
-                        </li>
-                        <li className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex">
-                            <BsGripVertical className="me-2 fs-3 align-self-center" />
-                            <LuFileSignature className="ms-2 me-4 fs-3 align-self-center text-success" />
-                            <div className="align-self-center">
-                                <a className="wd-assignment-link text-dark no-underline fw-bold"
-                                href="#/Kanbas/Courses/1234/Assignments/2">
-                                A2 - CSS + BOOTSTRAP
-                                </a><br/>
-                                <h6><span className="text-danger">Multiple Modules</span> | Not available until Jun 5 at 12:00am |<br/>
-                                Due Jun 12 at 11:59pm | 32 pts</h6>
-                            </div>
-                            <div className="align-self-center flex-fill">
-                                <LessonControlButtons />
-                            </div>
-                        </li>
-                        <li className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex">
-                            <BsGripVertical className="me-2 fs-3 align-self-center" />
-                            <LuFileSignature className="ms-2 me-4 fs-3 align-self-center text-success" />
-                            <div className="align-self-center">
-                                <a className="wd-assignment-link text-dark no-underline fw-bold"
-                                href="#/Kanbas/Courses/1234/Assignments/3">
-                                A3 - JAVASCRIPT + REACT
-                                </a><br/>
-                                <h6><span className="text-danger">Multiple Modules</span> | Not available until Jun 5 at 12:00am |<br/>
-                                Due Jun 19 at 11:59pm | 100 pts</h6>
-                            </div>
-                            <div className="align-self-center flex-fill">
-                                <LessonControlButtons />
-                            </div>
-                        </li>
+                        {assignments
+                            .filter((assignment: any) => assignment.course === cid)
+                            .map((assignment: any) => (
+                                <li className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex">
+                                    <BsGripVertical className="me-2 fs-3 align-self-center" />  
+                                    <LuFileSignature className="ms-2 me-4 fs-3 align-self-center text-success" />
+                                    <div className="align-self-center">
+                                        <Link to={`${assignment._id}`} className="wd-assignment-link text-dark no-underline fw-bold">
+                                            {assignment.title}
+                                        </Link>
+                                        <h6><span className="text-danger">Multiple Modules</span> | Not available until {assignment.available} |<br/>
+                                        Due {assignment.due} | {assignment.points}</h6>
+                                    </div>
+                                    <div className="align-self-center flex-fill">
+                                        <LessonControlButtons />
+                                    </div>
+                                </li>
+                        ))}
                     </ul>
                 </li>
             </ul>

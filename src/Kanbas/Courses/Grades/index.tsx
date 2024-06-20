@@ -1,9 +1,16 @@
 import { CiSearch } from "react-icons/ci";
 import { CiFilter } from "react-icons/ci";
-import { MdInput } from "react-icons/md";
 import GradeControlButtons from "./GradeControlButtons";
+import { useParams } from "react-router-dom";
+import * as db from "../../Database";
 
 export default function Grades() {
+    const { cid } = useParams();
+    const enrollments = db.enrollments.filter((enrollment: any) => enrollment.course === cid);
+    const assignments = db.assignments.filter((assignment: any) => assignment.course === cid);
+    const grades = db.grades;
+    const users = db.users;
+
     return (
         <div id="wd-grades" className="vh-100">
             <GradeControlButtons /><br /><br />
@@ -13,11 +20,8 @@ export default function Grades() {
                     <label htmlFor="wd-grades-search-student" className="col-form-label fw-bold">Student Names</label>
                     <select id="wd-grades-search-student" className="form-select text-secondary ps-5" style={{ position: "relative" }}>
                         <option selected>Search Students</option>
-                        <option value="S1">Jane Adams</option>
-                        <option value="S2">Christina Allen</option>
-                        <option value="S3">Samreen Ansari</option>
-                        <option value="S4">Han Bao</option>
-                        <option value="S5">Siran Cao</option>
+                        {enrollments.map((enrollment: any) => 
+                            <option value={enrollment._id}>{enrollment.user}</option>)}
                     </select>
                     <CiSearch className="position-absolute ms-3 fs-4" style={{ transform: "translateY(-135%)" }}/>
                 </div>
@@ -25,10 +29,8 @@ export default function Grades() {
                     <label htmlFor="wd-grades-search-assignment" className="col-form-label fw-bold">Assignment Names</label>
                     <select id="wd-grades-search-assignment" className="form-select text-secondary ps-5" style={{ position: "relative" }}>
                         <option selected>Search Assignments</option>
-                        <option value="A1">A1 SETUP</option>
-                        <option value="A2">A2 HTML</option>
-                        <option value="A3">A3 CSS</option>
-                        <option value="A4">A4 BOOTSTRAP</option>
+                        {assignments.map((assignment: any) => 
+                            <option value={assignment._id}>{assignment.title}</option>)}
                     </select>
                     <CiSearch className="position-absolute ms-3 fs-4" style={{ transform: "translateY(-135%)" }}/>
                 </div>
@@ -47,42 +49,33 @@ export default function Grades() {
                         <thead>
                             <tr>
                                 <th className="pb-4">Student Name</th>
-                                <th className="text-center"><div>A1 SETUP</div><div className="fw-light" >Out of 100</div></th>
-                                <th className="text-center"><div>A2 HTML</div><div className="fw-light" >Out of 100</div></th>
-                                <th className="text-center"><div>A3 CSS</div><div className="fw-light" >Out of 100</div></th>
-                                <th className="text-center"><div>A4 BOOTSTRAP</div><div className="fw-light" >Out of 100</div></th>
+                                {assignments.map((assignment: any) => 
+                                    <th className="text-center">
+                                        <div>{assignment.title}</div>
+                                        <div className="fw-light" >Out of {assignment.points}</div>
+                                    </th>)}
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="text-danger">Jane Adams</td><td className="text-center">100%</td>
-                                <td className="text-center">96.67%</td><td className="text-center">92.18%</td>
-                                <td className="text-center">66.22%</td>
-                            </tr>
-                            <tr>
-                                <td className="text-danger">Christina Allen</td><td className="text-center">100%</td>
-                                <td className="text-center">100%</td><td className="text-center">100%</td>
-                                <td className="text-center">100%</td>
-                            </tr>
-                            <tr>
-                                <td className="text-danger">Samreen Ansari</td><td className="text-center">100%</td>
-                                <td className="text-center">100%</td><td className="text-center">100%</td>
-                                <td className="text-center">100%</td>
-                            </tr>
-                            <tr>
-                                <td className="text-danger">Han Bao</td><td className="text-center">100%</td>
-                                <td className="text-center">100%</td>
-                                <td className="text-center">
-                                    <input className="position-relative form-control" value="88.03" />
-                                    <MdInput className="position-absolute ms-3 fs-4" style={{ transform: "translateY(-130%)" }}/>
-                                </td>
-                                <td className="text-center">98.99%</td>
-                            </tr>
-                            <tr>
-                                <td className="text-danger">Siran Cao</td><td className="text-center">100%</td>
-                                <td className="text-center">100%</td><td className="text-center">100%</td>
-                                <td className="text-center">100%</td>
-                            </tr>
+                            {enrollments.map((enrollment: any) => {
+                                const user = users.find((user: any) => user._id === enrollment.user);
+                                if (!user) {
+                                    return null; // Skip rendering if user is not found
+                                }
+                                return (
+                                    <tr>
+                                        <td className="text-danger">{user.firstName} {user.lastName}</td>
+                                        {assignments.map((assignment: any) => {
+                                            const grade = grades.find((g: any) => g.student === enrollment.user && g.assignment === assignment._id);
+                                            return (
+                                                <td key={assignment._id} className="text-center">
+                                                    {grade ? `${grade.grade}%` : ''}
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
