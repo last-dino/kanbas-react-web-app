@@ -1,10 +1,14 @@
 import { FaPlus } from "react-icons/fa6";
 import { CiSearch } from "react-icons/ci";
+import AssignmentEditor from "./Editor";
+import { useNavigate } from "react-router";
 
 export default function AssignmentsControls() {
+    const navigate = useNavigate();
+    
     return (
         <div id="wd-modules-controls" className="text-nowrap">
-            <button id="wd-add-assignment-btn" className="btn btn-lg btn-danger me-1 float-end">
+            <button id="wd-add-assignment-btn" onClick={() => {navigate(`new`)}} className="btn btn-lg btn-danger me-1 float-end">
                 <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
                 Assignment
             </button>

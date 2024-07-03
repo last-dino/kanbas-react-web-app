@@ -1,14 +1,18 @@
 import { BsGripVertical } from "react-icons/bs";
 import { LuFileSignature } from "react-icons/lu";
 import AssignmentsControls from "./AssignmentsControls";
-import LessonControlButtons from "../Modules/LessonControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import * as db from "../../Database";
+import { addAssignment, updateAssignment, deleteAssignment } from "./reducer";
+import { useDispatch, useSelector } from "react-redux";
+import AssignmentEditButtons from "./AssignmentEditButtons";
 
 export default function Assignments() {
     const { cid } = useParams();
-    const assignments = db.assignments;
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     return (
         <div id="wd-assignments" className="vh-100">
@@ -36,7 +40,9 @@ export default function Assignments() {
                                         Due {assignment.due} | {assignment.points}</h6>
                                     </div>
                                     <div className="align-self-center flex-fill">
-                                        <LessonControlButtons />
+                                        <AssignmentEditButtons 
+                                            assignmentId={assignment._id}
+                                            deleteAssignment={(assignmentId) => {dispatch(deleteAssignment(assignmentId))}}/>
                                     </div>
                                 </li>
                         ))}
