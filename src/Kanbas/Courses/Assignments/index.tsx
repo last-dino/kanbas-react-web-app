@@ -2,17 +2,29 @@ import { BsGripVertical } from "react-icons/bs";
 import { LuFileSignature } from "react-icons/lu";
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import * as db from "../../Database";
-import { addAssignment, updateAssignment, deleteAssignment } from "./reducer";
+import { Link, useParams } from "react-router-dom";
+import { setAssignments, addAssignment, updateAssignment, deleteAssignment } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import AssignmentEditButtons from "./AssignmentEditButtons";
+import * as client from "./client";
 
 export default function Assignments() {
     const { cid } = useParams();
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+    const fetchAssignments = async () => {
+        const assignments = await client.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignments(assignments));
+    };
+    useEffect(() => {
+        fetchAssignments();
+    }, [cid]);
+    const removeAssignment = async (assignmentId: string) => {
+        await client.deleteAssignment(assignmentId);
+        dispatch(deleteAssignment(assignmentId));
+    };    
 
     return (
         <div id="wd-assignments" className="vh-100">
@@ -42,7 +54,7 @@ export default function Assignments() {
                                     <div className="align-self-center flex-fill">
                                         <AssignmentEditButtons 
                                             assignmentId={assignment._id}
-                                            deleteAssignment={(assignmentId) => {dispatch(deleteAssignment(assignmentId))}}/>
+                                            deleteAssignment={(assignmentId) => {removeAssignment(assignmentId)}}/>
                                     </div>
                                 </li>
                         ))}

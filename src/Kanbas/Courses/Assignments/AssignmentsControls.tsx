@@ -1,6 +1,5 @@
 import { FaPlus } from "react-icons/fa6";
 import { CiSearch } from "react-icons/ci";
-import AssignmentEditor from "./Editor";
 import { useNavigate } from "react-router";
 
 export default function AssignmentsControls() {
