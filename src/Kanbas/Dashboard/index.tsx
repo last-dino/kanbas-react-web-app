@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import * as db from "../Database";
-import React, { useState } from "react";
 
 export default function Dashboard(
     { courses, course, setCourse, addNewCourse,
@@ -30,7 +28,7 @@ export default function Dashboard(
                 <div className="row row-cols-1 row-cols-md-5 g-4">
                     {courses.map((course) => (
                         <div key={course._id} id="wd-dashboard-course" className="col" style={{ width: "300px"}}>
-                            <Link to={`/Kanbas/Courses/${course._id}/Home`} className="text-decoration-none" >
+                            <Link to={`/Kanbas/Courses/${course.number}/Home`} className="text-decoration-none" >
                                 <div className="card rounded-3 overflow-hidden">
                                     <img className="wd-course-image" src={`/images/${course.image}`} height="{160}"/>
                                     <div className="card-body">

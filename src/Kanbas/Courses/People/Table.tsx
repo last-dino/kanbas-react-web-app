@@ -67,18 +67,18 @@ export default function PeopleTable() {
                 <tbody>
                 {users.map((user: any) => (
                     <tr key={user._id}>
-                    <td className="wd-full-name text-nowrap">
+                    <td id="wd-full-name" className="text-nowrap">
                         <FaUserCircle className="text-secondary me-2 fs-1" />
                         <Link to={`/Kanbas/Courses/${cid}/People/${user._id}`} className="no-underline">
-                        <span className="text-danger wd-first-name">{user.firstName} </span>
-                        <span className="text-danger wd-last-name">{user.lastName}</span>
+                        <span className="text-danger" id="wd-first-name">{user.firstName} </span>
+                        <span className="text-danger" id="wd-last-name">{user.lastName}</span>
                         </Link>
                     </td>
-                    <td className="wd-login-id">{user.loginId}</td>
-                    <td className="wd-section">{user.section}</td>
-                    <td className="wd-role">{user.role}</td>
-                    <td className="wd-last-activity">{user.lastActivity}</td>
-                    <td className="wd-total-activity">{user.totalActivity}</td>
+                    <td id="wd-login-id">{user.loginId}</td>
+                    <td id="wd-section">{user.section}</td>
+                    <td id="wd-role">{user.role}</td>
+                    <td id="wd-last-activity">{user.lastActivity}</td>
+                    <td id="wd-total-activity">{user.totalActivity}</td>
                     </tr>
                 ))}
                 </tbody>

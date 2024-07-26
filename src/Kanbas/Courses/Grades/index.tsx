@@ -3,6 +3,8 @@ import { CiFilter } from "react-icons/ci";
 import GradeControlButtons from "./GradeControlButtons";
 import { useParams } from "react-router-dom";
 import * as db from "../../Database";
+import * as usersClient from "../People/client";
+import * as assignmentClient from "../Assignments/client";
 
 export default function Grades() {
     const { cid } = useParams();
