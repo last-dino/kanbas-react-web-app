@@ -8,8 +8,9 @@ import { setModules, addModule, editModule, updateModule, deleteModule } from ".
 import { useDispatch, useSelector } from "react-redux";
 import * as client from "./client";
 
-export default function Modules() {
+export default function Modules({ courses }: { courses: any[]; }) {
     const { cid } = useParams();
+    const course = courses.find((course) => course._id === cid);
     const [moduleName, setModuleName] = useState("");
     const { modules } = useSelector((state: any) => state.modulesReducer);
     const dispatch = useDispatch();
@@ -24,12 +25,13 @@ export default function Modules() {
     };
     useEffect(() => {
         fetchModules();
-    }, []);
+    }, [cid]);
     const removeModule = async (moduleId: string) => {
         await client.deleteModule(moduleId);
         dispatch(deleteModule(moduleId));
     };    
     const saveModule = async (module: any) => {
+        console.log(module._id);
         const status = await client.updateModule(module);
         dispatch(updateModule(module));
     };
@@ -38,13 +40,13 @@ export default function Modules() {
         <div id="wd-modules">
             <ModulesControls setModuleName={setModuleName} moduleName={moduleName} 
                 addModule={() => {
-                    createModule({ name: moduleName, course: cid });
+                    createModule({ name: moduleName, course: course.number });
                     setModuleName("");
                 }} /><br /><br /><br /><br />
 
             <ul id="wd-modules" className="list-group rounded-0">
                 {modules
-                    .filter((module: any) => module.course === cid)
+                    .filter((module: any) => module.course === course.number)
                     .map((module: any) => (
                         <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                             <div className="wd-title p-3 ps-2 bg-secondary">

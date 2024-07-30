@@ -1,11 +1,24 @@
 import * as client from "./client";
+import * as peopleClient from "../Courses/People/client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
 
 export default function Profile() {
-    const [profile, setProfile] = useState<any>({});
+    const [profile, setProfile] = useState<any>({
+        username: "",
+        password: "",
+        firstName: "",
+        email: "",
+        lastName: "",
+        dob: "",
+        role: "USER",
+        loginId: "",
+        section: "",
+        lastActivity: "",
+        totalActivity: "",
+    });
     const navigate = useNavigate();
     const fetchProfile = async () => {
         try {
@@ -22,6 +35,9 @@ export default function Profile() {
         dispatch(setCurrentUser(null));
         navigate("/Kanbas/Account/Signin");
     };
+    const saveProfile = async () => {
+        await peopleClient.updateUser(profile);
+    }
 
     return (
         <div id="wd-profile-screen">
@@ -47,13 +63,13 @@ export default function Profile() {
                     <input id="wd-email" className="form-control mb-2" value={profile.email}
                             onChange={(e) => setProfile({ ...profile, email: e.target.value })}/>
                     <b>Roles:</b>  
-                    <select id="wd-role" className="form-select mb-2" onChange={(e) => setProfile({ ...profile, role: e.target.value })}>
+                    <select id="wd-role" className="form-select mb-4" onChange={(e) => setProfile({ ...profile, role: e.target.value })}>
                         <option value="USER">User</option>            <option value="ADMIN">Admin</option>
                         <option value="FACULTY">Faculty</option>      <option value="STUDENT">Student</option>
                     </select>
-                    {/* <button onClick={saveProfile} id="wd-save-btn" className="btn btn-secondary w-100 mb-2">
+                    <button onClick={saveProfile} id="wd-save-btn" className="btn btn-secondary w-100 mb-2">
                         Save
-                    </button> */}
+                    </button>
                     <button onClick={signout} id="wd-signout-btn" className="btn btn-danger w-100">
                         Sign out
                     </button>

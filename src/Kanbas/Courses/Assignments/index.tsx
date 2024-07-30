@@ -9,8 +9,9 @@ import React, { useState, useEffect } from "react";
 import AssignmentEditButtons from "./AssignmentEditButtons";
 import * as client from "./client";
 
-export default function Assignments() {
+export default function Assignments({ courses }: { courses: any[]; }) {
     const { cid } = useParams();
+    const course = courses.find((course) => course._id === cid);
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     const dispatch = useDispatch();
 
@@ -39,7 +40,7 @@ export default function Assignments() {
                     </div>
                     <ul className="list-group rounded-0">
                         {assignments
-                            .filter((assignment: any) => assignment.course === cid)
+                            .filter((assignment: any) => assignment.course === course.number)
                             .map((assignment: any) => (
                                 <li className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex">
                                     <BsGripVertical className="me-2 fs-3 align-self-center" />  

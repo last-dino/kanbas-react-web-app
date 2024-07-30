@@ -1,11 +1,11 @@
 import Modules from "../Modules";
 import CourseStatus from "./Status";
 
-export default function Home() {
+export default function Home({ courses }: { courses: any[]; }) {
     return (
         <div id="wd-home" className="d-flex">
             <div className="flex-fill me-5">
-                <Modules />
+                <Modules courses={courses}/>
             </div>
             <div className="d-none d-xl-block">
                 <CourseStatus />

@@ -21,8 +21,9 @@ export default function Kanbas() {
     }, []);
     
     const [course, setCourse] = useState<any>({
-        _id: "1234", name: "New Course", number: "New Number", image: "new.jpg", 
-        startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
+        name: "New Course", number: "", image: "new.jpg", color: "black",
+        startDate: "", endDate: "", department: "", credits: 0,
+        description: "New Description",
     });
     const addNewCourse = async() => {
         const newCourse = await client.createCourse(course);
