@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 
 export default function Dashboard(
     { courses, course, setCourse, addNewCourse,
-        deleteCourse, updateCourse }: {
+        deleteCourse, updateCourse }: 
+    {
         courses: any[]; course: any; setCourse: (course: any) => void;
         addNewCourse: () => void; deleteCourse: (course: any) => void;
-        updateCourse: () => void; }
+        updateCourse: () => void; 
+    }
 ) {
     return (
         <div className="p-4" id="wd-dashboard">

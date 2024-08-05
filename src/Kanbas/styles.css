@@ -37,3 +37,38 @@ body * {
     object-position: center;
     height: 150px;
 }
+
+.table-details {
+    border-collapse: collapse; 
+    width: 60%;
+    margin: 10px 0;
+}
+
+.table-details td, .table-details th {
+    border: none;
+    padding: 4px 8px;
+}
+
+.table-details td:first-child {
+    text-align: right;
+}
+.simple-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0; 
+}
+
+.simple-table th, .simple-table td {
+    text-align: left;
+    padding: 8px; 
+    border-bottom: 1px solid #ccc; /* Light gray line for separation */
+}
+
+.simple-table th {
+    background-color: none; 
+    font-weight: normal; 
+}
+
+.simple-table tbody tr:last-child td {
+    border-bottom: none; 
+}
