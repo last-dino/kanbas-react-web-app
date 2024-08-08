@@ -2,6 +2,8 @@ import { BsCalendar2Range } from "react-icons/bs";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
+import { BsPlus } from "react-icons/bs";
+import { PiTrashLight } from "react-icons/pi";
 import WysiwygEditor from "../WysiwygEditor";
 import * as client from "../client";
 import { updateQuizzes } from "../QuizReducer";
@@ -47,6 +49,21 @@ export default function FillInBlanksEditor({ question, setQuestion }: SelectorPr
         });
     };
 
+    const addAnswerOption = () => {
+        setQuestion({
+            ...question,
+            answers: [...question.answers, ""],
+        });
+    };
+
+    const deleteAnswerOption = (index: number) => {
+        const updatedAnswers = question.answers.filter((_:string, i:number) => i !== index);
+        setQuestion({
+            ...question,
+            answers: updatedAnswers,
+        });
+    };
+
     const addQuestionToQuiz = () => {
         if (quiz) {
         const updatedQuiz = {
@@ -76,21 +93,25 @@ export default function FillInBlanksEditor({ question, setQuestion }: SelectorPr
         <br />
 
         <div className="col-sm-10" style={{ marginLeft: "350px" }}>
-            {[0, 1, 2, 3].map(index => (
-                <div>
+            {question.answers.map((answer: string, index: number) => (
+                <div className="form-check d-flex align-items-center">
                     <label
                         htmlFor={index.toString()}
                     > Acceptable Answer: </label>
                     <input
-                        className="form-control mb-3"
+                        className="form-control mb-3 ms-3"
                         id={index.toString()}
                         style={{ width: "250px", height: "50px" }}
                         onChange={(e) => handleAnswerChange(index, e.target.value)}
                         placeholder={question.answers[index] || ""}
                     />
+                    <PiTrashLight onClick={() => deleteAnswerOption(index)} className="fs-4 ms-auto" style={{ cursor: "pointer", color: "grey", marginRight: "330px", float: "right"  }} />
                 </div>
             ))}
-        </div>
+            <button onClick={addAnswerOption} className="text-danger mt-2" style={{ background: "none", border: "none", color: "red", float: "right", cursor: "pointer", padding: "0", marginRight: "330px" }} >
+                    <BsPlus className="fs-5" /> Add another answer
+            </button>
+        </div><br/><br/>
 
         <hr />
         <div className="col" style={{ marginRight: "500px" }}>

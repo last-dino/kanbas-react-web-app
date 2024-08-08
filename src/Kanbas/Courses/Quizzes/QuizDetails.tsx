@@ -51,13 +51,16 @@ export default function QuizDetails() {
     }, [qid, quizzes, isCreatingNew]);
     
     const navigateToQuizEditor = () => {
-        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Edit`, { state: { quiz: quizDetails } });
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/DetailEditor`, { state: { quiz: quizDetails } });
+    };
+    const navigateToQuizPreview = () => {
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Preview`);
     };
 
     return(
         <div id="wd-quizdetail" className="container mt-4">
             <div className="ms-auto" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <button id="wd-preview-btn" className="btn btn-me btn-secondary me-3">
+                <button id="wd-preview-btn" className="btn btn-me btn-secondary me-3"  onClick={navigateToQuizPreview}>
                     Preview
                 </button>
                 <button id="wd-add-group-btn" className="btn btn-me btn-secondary me-1" onClick={navigateToQuizEditor}>
