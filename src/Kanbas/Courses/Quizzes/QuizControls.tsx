@@ -1,13 +1,17 @@
 import { FaPlus } from "react-icons/fa6"; 
 import { IoIosSearch } from "react-icons/io";
 import { IoEllipsisVertical } from "react-icons/io5"; 
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function QuizControls({
     addQuiz,
   
   }:{
     addQuiz: () => void;
-  }) { 
+  }) {
+    const navigate = useNavigate();
+    const { cid } = useParams();
+
     return (
       <div id="wd-quizzes-controls" className="d-flex text-nowrap">
         <div className="input-group me-3" style={{ width: "250px" }}>
