@@ -1,6 +1,6 @@
 import { RiForbidLine } from "react-icons/ri";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 
 export default function QuizEditorButtons() {
