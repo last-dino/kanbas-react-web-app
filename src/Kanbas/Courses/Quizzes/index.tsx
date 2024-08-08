@@ -58,7 +58,7 @@ export default function Quizzes({ courses }: { courses: any[]; }) {
                <ul className="wd-assignments list-group rounded-0" style={{borderLeftWidth: "thick", borderLeftColor: "green", borderLeftStyle: "solid" }}>
                   {quizzes
                      .map((quiz: any) => (
-                     <li key={quiz._id} className="wd-quiz list-group-item p-3" style={{ display: 'flex', justifyContent: 'left' }}>
+                     <li className="wd-quiz list-group-item p-3" style={{ display: 'flex', justifyContent: 'left' }}>
                      <div style={{ display: 'flex', alignItems: 'center' }}>
                         <LuPlane className="fs-4 text-success" style={{ marginTop: "5px" }} />
                      </div>

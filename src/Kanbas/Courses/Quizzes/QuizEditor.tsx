@@ -67,6 +67,7 @@ export default function QuizEditor() {
             />
             <form>
                 <div className="mb-3 pt-4">
+                    <h5>Quiz Instructions:</h5>
                     <WysiwygEditor/>
                 </div>
                 <div className="row mb-3">

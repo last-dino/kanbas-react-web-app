@@ -11,9 +11,11 @@ import { FaGlasses } from "react-icons/fa";
 import Quizzes from "./Quizzes";
 import QuizDetails from "./Quizzes/QuizDetails";
 import QuizEditor from "./Quizzes/QuizEditor";
+import QuizQuestionsEditor from "./Quizzes/QuizQuestionEditor/index";
+import Selector from "./Quizzes/QuizQuestionEditor/Selector";
 
 export default function Courses({ courses }: { courses: any[]; }) {
-    const { cid,qid } = useParams();
+    const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
     const { pathname } = useLocation();
     const isQuizzesPage = pathname === `/Kanbas/Courses/${cid}/Quizzes`;
@@ -46,7 +48,9 @@ export default function Courses({ courses }: { courses: any[]; }) {
                         <Route path="People/:uid" element={<PeopleTable />} />
                         <Route path="Quizzes" element={<Quizzes courses={courses}/>} />
                         <Route path="Quizzes/:qid" element={<QuizDetails/>} />
-                        <Route path="Quizzes/:qid/edit" element={<QuizEditor />} />
+                        <Route path="Quizzes/:qid/DetailEditor" element={<QuizEditor />} />
+                        <Route path="Quizzes/:qid/QuestionEditor" element={<QuizQuestionsEditor />} />
+                        <Route path="Quizzes/:qid/QuestionEditor/new" element={<Selector />} />
                         <Route path="Grades" element={<Grades />} />
                     </Routes>
                 </div>

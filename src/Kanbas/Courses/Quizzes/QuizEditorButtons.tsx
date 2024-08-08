@@ -5,13 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function QuizEditorButtons() {
     const { cid, qid } = useParams();
+    const { pathname } = useLocation();
     const navigate = useNavigate();
     const navigateToQuestionEditor = () => {
-        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`); //need to modify later
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/QuestionEditor`); //need to modify later
     };
 
     const navigateToDetailEditor = () => {
-        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Edit`);
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/DetailEditor`);
     };
     return (
         <div>
@@ -29,10 +30,10 @@ export default function QuizEditorButtons() {
             <div id="wd-css-navigating-with-tabs">
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
-                        <a className="nav-link active" onClick={navigateToDetailEditor}>Details</a>
+                        <a className={`nav-link ${pathname.includes("DetailEditor") ? "active" : "text-danger"}`} onClick={navigateToDetailEditor}>Details</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-danger" onClick={navigateToQuestionEditor}>Questions</a>
+                        <a className={`nav-link ${pathname.includes("QuestionEditor") ? "active" : "text-danger"}`} onClick={navigateToQuestionEditor}>Questions</a>
                     </li>
                 </ul>
             </div>

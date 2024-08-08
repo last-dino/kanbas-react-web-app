@@ -72,3 +72,9 @@ body * {
 .simple-table tbody tr:last-child td {
     border-bottom: none; 
 }
+
+.flex-questions-container {
+    display: flex;
+    flex-direction:column;
+    margin: 15px;
+}

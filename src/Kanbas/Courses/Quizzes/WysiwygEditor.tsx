@@ -3,7 +3,6 @@ import { Editor } from '@tinymce/tinymce-react';
 export default function WysiwygEditor() {
     return (
         <div>
-            <h5>Quiz Instructions:</h5>
             <Editor
                 apiKey='5x8r05jh2cze0tnc0ca657e55x2pd9uh3d564zcndfmnu7sh'
                 initialValue="Start typing here..."

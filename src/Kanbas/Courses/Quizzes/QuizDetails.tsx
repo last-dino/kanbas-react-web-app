@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles.css";
+import { findQuizById } from "./client";
 
 export default function QuizDetails() {
     const { cid, qid } = useParams();
