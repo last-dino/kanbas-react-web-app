@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { FaBan, FaCheckCircle, FaEllipsisV, FaTrash, FaPlus } from "react-icons/fa";
+import { FaTrash, FaPlus } from "react-icons/fa";
 import { Link, useLocation, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -7,15 +7,6 @@ import * as client from "../client";
 import QuizEditorButtons from "../QuizEditorButtons";
 import DisplayQuestion from "./DisplayQuestion";
 import { updateQuizzes } from "../QuizReducer";
-
-// type Question = {
-//   _id: string;
-//   questionType: string;
-//   question: string;
-//   correctAnswer: string;
-//   answers: string[];
-//   points: number;
-// };
 
 export default function QuizQuestionsEditor() {
   const location = useLocation();
@@ -54,13 +45,13 @@ export default function QuizQuestionsEditor() {
         };
         setQuiz(updatedQuiz);
         dispatch(updateQuizzes(updatedQuiz));
-        client.updateQuiz(updatedQuiz, qid as string);
+        // client.updateQuiz(updatedQuiz, qid as string);
       } catch (err) {
           console.log(err)
       }
   }
 
-  const saveQuestions = async (questions: any) => {
+  const saveQuiz = async () => {
       const newQuiz = {...quiz, questions: questions};
       setQuiz(newQuiz);
       dispatch(updateQuizzes(newQuiz));
@@ -80,47 +71,33 @@ export default function QuizQuestionsEditor() {
             <FaPlus/> New Question 
         </button><br/><br/><br/>
         <hr />
-        {/* <div className="flex-questions-container" >
-            <ul className="list-group" style={{ margin: 15 }}>
-                {questions.length > 0 ? (questions.map((question, index) => (
-                    <li className="list-group-item" key={index}>
-                        <div className="wd-flex-row-container float-end"> 
-                          <FaTrash onClick={() => { deleteQuestion(question) }} className="btn btn-danger float-end"/> 
-                          <div><h5>{question.points} points </h5></div><div><h5>Question {index + 1} </h5></div>
-                        </div>
-                        <DisplayQuestion question={question} />
-                    </li>
-                  )) 
-                ) : "" }
-            </ul>
-        </div> */}
 
-<div className="flex-questions-container">
-      <ul className="list-group" style={{ margin: 15 }}>
-        {questions.length > 0 ? (
-          questions.map((question, index) => (
-            <li className="list-group-item" key={index}>
-              <div className="p-2 mb-2" style={{ backgroundColor: "#f5f5f5", width:"100%"}}>
-                <div className="d-flex justify-content-between align-items-center">
-                  <h5 className="m-0">Question {index + 1}</h5>
-                  <div className="d-flex align-items-center">
-                    <h5 className="m-0 me-3">{question.points} points</h5>
-                    <FaTrash
-                      onClick={() => { deleteQuestion(question) }}
-                      className="text-danger"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <DisplayQuestion question={question} />
-              </div>
-            </li>
-          ))
-        ) : ""}
-      </ul>
-    </div>
+      <div className="flex-questions-container">
+            <ul className="list-group" style={{ margin: 15 }}>
+              {questions.length > 0 ? (
+                questions.map((question, index) => (
+                  <li className="list-group-item" key={index}>
+                    <div className="p-2 mb-2" style={{ backgroundColor: "#f5f5f5", width:"100%"}}>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <h5 className="m-0">Question {index + 1}</h5>
+                        <div className="d-flex align-items-center">
+                          <h5 className="m-0 me-3">{question.points} points</h5>
+                          <FaTrash
+                            onClick={() => { deleteQuestion(question) }}
+                            className="text-danger"
+                            style={{ cursor: "pointer" }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <DisplayQuestion question={question} />
+                    </div>
+                  </li>
+                ))
+              ) : ""}
+            </ul>
+        </div>
 
         <div className="wd-flex-row-container float-end me-5">
           <button className="btn btn-lg btn-secondary me-1 float-end"
@@ -130,7 +107,7 @@ export default function QuizQuestionsEditor() {
                 Cancel
               </Link>
           </button>
-          <button onClick={saveQuestions} className="btn btn-lg btn-danger me-5 float-end">
+          <button onClick={saveQuiz} className="btn btn-lg btn-danger me-5 float-end">
               <Link to={`/Kanbas/Courses/${cid}/Quizzes/${qid}`} 
                 style={{ color: "white", textDecoration: "none" }}>
                 Save

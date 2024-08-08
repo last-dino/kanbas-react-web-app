@@ -20,6 +20,11 @@ export default function Selector() {
         points: 0
     });
 
+    type SelectorProps = {
+        question: any;
+        setQuestion: React.Dispatch<React.SetStateAction<any>>;
+    };
+
     return (
         <div>
         <div id="wd-question-editor" className="ms-5 mt-5 wd-flex-row-container">
