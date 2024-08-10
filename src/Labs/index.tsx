@@ -13,7 +13,7 @@ export default function Labs() {
         <Provider store={store}>
             <div>
                 <h1>Web Development - SEC02</h1>
-                <h2>Xinyi Xu</h2>
+                <h2>Xinyi Xu, Jiayue Zhang, Dongjun Xie, Rushan Liang, Clifford Yin</h2>
                 <TOC />
                 <Routes>
                     <Route path="/" element={<Navigate to="Lab1" />} />

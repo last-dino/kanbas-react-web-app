@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ToastContainer />
       <div className="h-100">
         <Routes>
@@ -15,7 +15,7 @@ function App() {
           <Route path="/Kanbas/*" element={<Kanbas />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

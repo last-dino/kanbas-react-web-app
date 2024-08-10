@@ -49,7 +49,7 @@ export default function TOC() {
                 <a id="wd-github-server" href="https://github.com/last-dino/kanbas-node-server-app" target="_blank" className="nav-link"> Server Github Repo</a>
             </li>
             <li className="nav-item">
-                <a id="wd-render-root" href="https://kanbas-node-server-app-9vbd.onrender.com" target="_blank" className="nav-link"> Render Root</a>
+                <a id="wd-render-root" href="https://kanbas-node-server-app-mongo-upev.onrender.com" target="_blank" className="nav-link"> Render Root</a>
             </li>
         </ul>
     );
