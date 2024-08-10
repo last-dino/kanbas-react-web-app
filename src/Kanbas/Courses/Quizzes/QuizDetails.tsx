@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles.css";
-import { findQuizById } from "./client";
 
 export default function QuizDetails() {
     const { cid, qid } = useParams();
@@ -17,11 +16,14 @@ export default function QuizDetails() {
         return date.toISOString().split('T')[0];
     }
 
+    console.log("QuizDetails")
+    console.log(quizzes);
+
     const defaultQuizDetails = {
-        title: isCreatingNew ? "New Quiz" : "Loading Quiz...",
+        title: "New Quiz",
         quizType: "Graded Quiz",
         assignmentGroup: "Quizzes", 
-        points: 35,
+        points: 0,
         shuffleAnswers: true, 
         timeLimit: 20, 
         multipleAttempts: 1,
@@ -51,16 +53,16 @@ export default function QuizDetails() {
     }, [qid, quizzes, isCreatingNew]);
     
     const navigateToQuizEditor = () => {
-        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/DetailEditor`, { state: { quiz: quizDetails } });
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/QuizEditor`, { state: { quiz: quizDetails } });
     };
-    const navigateToQuizPreview = () => {
-        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Preview`);
-    };
+    // const navigateToQuizPreview = () => {
+    //     navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Preview`);
+    // };
 
     return(
         <div id="wd-quizdetail" className="container mt-4">
             <div className="ms-auto" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <button id="wd-preview-btn" className="btn btn-me btn-secondary me-3"  onClick={navigateToQuizPreview}>
+                <button id="wd-preview-btn" className="btn btn-me btn-secondary me-3">
                     Preview
                 </button>
                 <button id="wd-add-group-btn" className="btn btn-me btn-secondary me-1" onClick={navigateToQuizEditor}>
@@ -137,6 +139,11 @@ export default function QuizDetails() {
                     <td>{formatDateForInput(quizDetails.until)}</td>
                 </tbody>
             </table>
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <button id="wd-take-quiz-btn" className="btn btn-lg btn-danger me-1 center">
+               Take Quiz
+            </button>
+         </div>
         </div>
     )
 }

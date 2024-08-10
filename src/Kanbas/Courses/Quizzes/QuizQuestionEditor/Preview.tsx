@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { PiWarningCircle, PiPencil } from "react-icons/pi";
 import { useNavigate } from "react-router";
 import * as client from "../client";
-import QuizEditorButtons from "../QuizEditorButtons";
 import DisplayQuestion from "./DisplayQuestion";
 import { updateQuizzes } from "../QuizReducer";
 
