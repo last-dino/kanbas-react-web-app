@@ -2,11 +2,14 @@ import { BsPencil } from "react-icons/bs";
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "../../styles.css";
 
 export default function QuizDetails() {
     const { cid, qid } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    const { title, role } = location.state || {}; 
     const quizzes = useSelector((state: any) => state.QuizReducer.quizzes);
     const isCreatingNew = qid === 'new';
 
@@ -55,21 +58,24 @@ export default function QuizDetails() {
     const navigateToQuizEditor = () => {
         navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/QuizEditor`, { state: { quiz: quizDetails } });
     };
-    // const navigateToQuizPreview = () => {
-    //     navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Preview`);
-    // };
+    const navigateToQuizPreview = () => {
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Preview`);
+    };
 
     return(
         <div id="wd-quizdetail" className="container mt-4">
-            <div className="ms-auto" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <button id="wd-preview-btn" className="btn btn-me btn-secondary me-3">
-                    Preview
-                </button>
-                <button id="wd-add-group-btn" className="btn btn-me btn-secondary me-1" onClick={navigateToQuizEditor}>
-                    <BsPencil className="position-relative me-2" style={{ bottom: "1px" }} />
-                    Edit
-                </button>
-            </div><hr/>
+            {role !== 'STUDENT' && (
+                <div className="ms-auto" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <button id="wd-preview-btn" className="btn btn-me btn-secondary me-3" onClick={navigateToQuizPreview}>
+                        Preview
+                    </button>
+                    <button id="wd-add-group-btn" className="btn btn-me btn-secondary me-1" onClick={navigateToQuizEditor}>
+                        <BsPencil className="position-relative me-2" style={{ bottom: "1px" }} />
+                        Edit
+                    </button>
+                </div>
+            )}
+            <hr/>
             <table className="table table-details">
                 <thead>
                     <tr>

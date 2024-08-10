@@ -1,27 +1,37 @@
 import QuizControls from "./QuizControls";
 import { useParams, useNavigate} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as client from "./client"
 import { setQuizzes, deleteQuizzes } from "./QuizReducer";
 import QuizMenuButtons from "./QuizMenuButtons";
 import { FaSortDown } from "react-icons/fa";
 import { LuPlane } from "react-icons/lu";
+import { profile } from "../../Account/client";
 
 
 export default function Quizzes({ courses }: { courses: any[]; }) {
-   const { cid } = useParams();
+   const { cid, uid } = useParams();
    const navigate = useNavigate();
    const dispatch = useDispatch();
+   const [userRole, setUserRole] = useState<string>();
    const { quizzes } = useSelector((state: any) => state.QuizReducer);
-   console.log(quizzes);
 
    const fetchQuizzes = async () => {
       const quizzes = await client.findQuizzesByCourse(cid as string);
       dispatch(setQuizzes(quizzes))
-    };
+   };
+
+   const fetchUserRole = async () => {
+      console.log("fetch User Role");
+      const currentUser = await profile();
+      console.log(currentUser);
+      setUserRole(currentUser.role);
+   };
+
    useEffect(() => {
       fetchQuizzes();
+      fetchUserRole();
    }, [cid]);
   
    const removeQuiz = async (quizId: string) => {
@@ -30,7 +40,7 @@ export default function Quizzes({ courses }: { courses: any[]; }) {
    };
 
    const navigateToQuizDetail = (quizId: string, quizTitle: string) => {
-      navigate(`/Kanbas/Courses/${cid}/Quizzes/${quizId}`, { state: { title: quizTitle } });
+      navigate(`/Kanbas/Courses/${cid}/Quizzes/${quizId}`, { state: { title: quizTitle, role: userRole,} });
    };
 
    const formatDate = (date: Date) => {
@@ -45,8 +55,10 @@ export default function Quizzes({ courses }: { courses: any[]; }) {
 
    return (
       <div id ="wd-quizzes" className="container mt-4">
+         {userRole === "FACULTY" && (
          <QuizControls addQuiz={() => {navigate(`/Kanbas/Courses/${cid}/Quizzes/new`);
-      }}/><br /><br />
+         }}/>)}
+         <br /><br />
          <ul id="wd-quizzes" className="list-group rounded-0">
             <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
@@ -57,6 +69,7 @@ export default function Quizzes({ courses }: { courses: any[]; }) {
                </div>
                <ul className="wd-assignments list-group rounded-0" style={{borderLeftWidth: "thick", borderLeftColor: "green", borderLeftStyle: "solid" }}>
                   {quizzes
+                     .filter((quiz: any) => userRole === "FACULTY" || quiz.published) 
                      .map((quiz: any) => (
                         <li key={quiz._id} className="wd-quiz list-group-item p-3" style={{ display: 'flex', justifyContent: 'left' }}>
                      <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -71,14 +84,16 @@ export default function Quizzes({ courses }: { courses: any[]; }) {
                         <strong>Due</strong>
                         <span> {quiz.due} | {quiz.points} pts | {quiz.questions.length} Questions</span>
                      </div>
-                     <div className="me-2 " style={{ marginLeft: 'auto'}}>
-                        <QuizMenuButtons
-                           quizId={quiz._id}
-                           deleteQuiz={(quizId) => {removeQuiz(quizId);}}
-                           editQuiz={() => navigateToQuizDetail(quiz._id, quiz.title)}
-                           published={quiz.published}
-                           />
-                     </div>
+                     {userRole === "FACULTY" && (
+                        <div className="me-2 " style={{ marginLeft: 'auto'}}>
+                           <QuizMenuButtons
+                              quizId={quiz._id}
+                              deleteQuiz={(quizId) => {removeQuiz(quizId);}}
+                              editQuiz={() => navigateToQuizDetail(quiz._id, quiz.title)}
+                              published={quiz.published}
+                              />
+                        </div>
+                        )}
                      </li>
                      ))}
                </ul>  
