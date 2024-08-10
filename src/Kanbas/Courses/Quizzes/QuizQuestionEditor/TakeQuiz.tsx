@@ -8,7 +8,7 @@ import * as client from "../client";
 import DisplayQuestion from "./DisplayQuestion";
 import { updateQuizzes } from "../QuizReducer";
 
-export default function Preview() {
+export default function TakeQuiz() {
   const location = useLocation();
   const { cid, qid } = useParams();
   const [quiz, setQuiz] = useState<any>({});
@@ -119,9 +119,8 @@ const StartTimeDisplay = () => {
     <div className="container mt-4">
       
       <div><h3><strong>{quiz.title}</strong></h3></div>
-      <div className="alert alert-danger" role="alert"><PiWarningCircle /> This is a preview of the published version of the quiz</div>
+
       <div className="d-flex">Started:&nbsp;<StartTimeDisplay/></div>
-      <h3><strong>Quiz Instructions</strong></h3>
         <hr />
 
       <div className="flex-questions-container">
@@ -190,16 +189,8 @@ const StartTimeDisplay = () => {
             Your score: {score} / {quiz.points}
           </div>
         )}
-        <br/><br/><br/>
+        <br/>
 
-        <div className="p-2 mb-2" style={{ backgroundColor: "#f5f5f5", width:"100%"}}>
-          <button style={{ background: "none", border: "none", color: "red",  cursor: "pointer", padding: "0"}}>
-            <Link to={`/Kanbas/Courses/${cid}/Quizzes/${qid}/QuestionEditor`} 
-                    style={{ color: "black", textDecoration: "none" }}>
-                <PiPencil style={{transform: "scaleX(-1)"}}/> Keep Editing This Quiz
-              </Link>
-            </button>
-        </div>
       </div>
   );
 }

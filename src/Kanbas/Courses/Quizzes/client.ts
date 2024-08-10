@@ -35,3 +35,23 @@ export const updateQuiz = async (quiz: any, quizId: string) => {
     console.log(response)
     return response.data; 
 }
+
+export const fetchQuizAttempts = async (quizId: string, userId: string) => {
+    try {
+        const response = await axios.get(`/api/quizzes/${quizId}/attempts/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching quiz attempts', error);
+        throw error;
+    }
+};
+
+export const updateQuizAttempt = async (quizId: string, userId: string, attemptData: any) => {
+    try {
+        const response = await axios.put(`/api/quizzes/${quizId}/attempts/${userId}`, attemptData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating quiz attempt', error);
+        throw error;
+    }
+};
