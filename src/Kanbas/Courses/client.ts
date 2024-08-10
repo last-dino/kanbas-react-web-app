@@ -4,9 +4,12 @@ const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
 const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 
 export const fetchAllCourses = async () => {
-    const { data } = await axiosWithCredentials.get(COURSES_API);
-    console.log(data)
-    return data;
+    try {
+        const { data } = await axiosWithCredentials.get(COURSES_API);
+        return data;
+    } catch (err) {
+        return [];
+    }
 }; 
 export const createCourse = async (course: any) => {
     const response = await axiosWithCredentials.post(COURSES_API, course);
@@ -19,4 +22,11 @@ export const deleteCourse = async (id: string) => {
 export const updateCourse = async (course: any) => {
     const response = await axiosWithCredentials.put(`${COURSES_API}/${course._id}`, course);
     return response.data;
-};  
+};
+
+export const requestEnrollCourse = async (courseId: string) => {
+    const response = await axiosWithCredentials.post(`${COURSES_API}/enroll`, {
+        courseId
+    });
+    return response.data;
+}

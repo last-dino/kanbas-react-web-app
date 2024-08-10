@@ -10,16 +10,18 @@ import { Provider } from "react-redux";
 import Account from "./Account";
 import ProtectedRoute from "./ProtectedRoute";
 import Session from "./Account/Session";
+import {useLocation} from "react-router-dom";
 
 export default function Kanbas() {
     const [courses, setCourses] = useState<any[]>([]);
+    const location = useLocation();
     const fetchCourses = async () => {
         const courses = await client.fetchAllCourses();
         setCourses(courses);
     };
     useEffect(() => {
         fetchCourses();
-    }, []);
+    }, [location]);
     
     const [course, setCourse] = useState<any>({
         name: "New Course", number: "", image: "new.jpg", color: "black",
@@ -61,7 +63,8 @@ export default function Kanbas() {
                             <Route path="Account/*" element={<Account />} />
                             <Route path="Dashboard" element={
                                 <ProtectedRoute>
-                                    <Dashboard 
+                                    <Dashboard
+                                        refreshCourses={fetchCourses}
                                         courses={courses}
                                         course={course}
                                         setCourse={setCourse}

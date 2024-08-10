@@ -10,7 +10,7 @@ import {toast} from "react-toastify";
 
 export default function Signup() {
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="shadow p-4 rounded bg-white" style={{ width: '400px' }}>
@@ -42,9 +42,9 @@ export default function Signup() {
                         const registerApi = process.env.REACT_APP_REMOTE_SERVER + `/api/users/register`;
                         axios.post(registerApi, values)
                             .then(response => {
-                                toast("Registration successful. Please login to continue.", {type: "success"});
-
-                                navigate("/Kanbas/Account/Signin");
+                                toast("Registration successful.", {type: "success"});
+                                dispatch(setCurrentUser(response.data));
+                                navigate("/Kanbas/Dashboard");
                             })
                             .catch(error => {
                                 console.error(error);
