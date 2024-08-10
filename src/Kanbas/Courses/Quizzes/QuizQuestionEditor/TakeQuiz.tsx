@@ -8,13 +8,14 @@ import * as client from "../client";
 import DisplayQuestion from "./DisplayQuestion";
 import { updateQuizzes } from "../QuizReducer";
 
-export default function Preview() {
+export default function TakeQuiz() {
   const location = useLocation();
   const { cid, qid } = useParams();
   const [quiz, setQuiz] = useState<any>({});
   const [questions, setQuestions] = useState<any[]>([]);
   const [userAnswers, setUserAnswers] = useState<any>({});
   const [score, setScore] = useState<number | null>(null);
+  const [showCorrectAnswers, setShowCorrectAnswers] = useState<{ [key: string]: boolean }>({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -32,8 +33,6 @@ export default function Preview() {
       fetchQuiz();
     }, [qid]);
     
-  console.log(quiz);
-  console.log(questions);
 
   const handleAnswerChange = (questionId: string, answer: string) => {
     setUserAnswers({
@@ -44,6 +43,7 @@ export default function Preview() {
 
   const handleSubmit = () => {
     let calculatedScore = 0;
+    let newShowCorrectAnswers = { ...showCorrectAnswers };
 
     questions.forEach((question) => {
       const userAnswer = userAnswers[question._id];
@@ -51,20 +51,30 @@ export default function Preview() {
       if (question.questionType === "Multiple Choice" || question.questionType === "True False") {
         if (userAnswer === question.correctAnswer) {
             calculatedScore += question.points;
+            newShowCorrectAnswers[question._id] = false;
+        }
+        else {
+            newShowCorrectAnswers[question._id] = true;
         }
       } else {
+        let found = false;
         // Normalize both user answer and correct answers for comparison
         const normalizedUserAnswer = userAnswer.trim().toLowerCase();
         const normalizedAnswers = question.answers?.map((answer: string) => answer.trim().toLowerCase()) ?? [];
         normalizedAnswers.map((answer: string) => {
             if (answer === normalizedUserAnswer){
                 calculatedScore += question.points; 
-            }
+                newShowCorrectAnswers[question._id] = false;
+                found = true;
+            } 
         })
+        if (!found) 
+            newShowCorrectAnswers[question._id] = true;
       }
     });
 
     setScore(calculatedScore);
+    setShowCorrectAnswers(newShowCorrectAnswers);
   };
 
 
@@ -119,9 +129,8 @@ const StartTimeDisplay = () => {
     <div className="container mt-4">
       
       <div><h3><strong>{quiz.title}</strong></h3></div>
-      <div className="alert alert-danger" role="alert"><PiWarningCircle /> This is a preview of the published version of the quiz</div>
+
       <div className="d-flex">Started:&nbsp;<StartTimeDisplay/></div>
-      <h3><strong>Quiz Instructions</strong></h3>
         <hr />
 
       <div className="flex-questions-container">
@@ -140,37 +149,49 @@ const StartTimeDisplay = () => {
                     <div>
                     
                     <div>
-                        <div className="mt-3"><h5>{question.title}</h5></div>
-                        <div><h6>{question.question}</h6></div>
-                                
-                        {question.questionType === "Fill In the Blank" ? (
-                            <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Enter your answer here"
-                            onChange={(e) => handleAnswerChange(question._id, e.target.value)}
-                          />
-                        ) : (
-                            <ul className="list-group" style={{ marginBottom: "50px" }}>
-                            {question.answers.length > 0 ? (question.answers.map((answer: string, index:number) => (
+  <div className="mt-3"><h5>{question.title}</h5></div>
+  <div><h6>{question.question}</h6></div>
 
-                                <li className="list-group-item" style={{ borderColor: "white" }}>
-                                    <input
-                                        type="radio"
-                                        name={"choice" + question._id}
-                                        id={question._id + index}
-                                        style={{ marginRight: "10px", marginBottom: "15px" }}
-                                        onChange={() => handleAnswerChange(question._id, answer)}
-                                    />
-
-                                    <label htmlFor={question._id + index}> {answer} </label>
-                                </li>
-                            ))): ""}
-                        </ul>
-                        )}
-                        
-                        
-                    </div>
+  {question.questionType === "Fill In the Blank" ? (
+    <>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Enter your answer here"
+        onChange={(e) => handleAnswerChange(question._id, e.target.value)}
+      />
+      {showCorrectAnswers[question._id] && question.answers.map((answer: string) => (
+        <div className="alert alert-info mt-2" role="alert" key={answer}>
+          Correct answer: {answer}
+        </div>
+      ))}
+    </>
+  ) : (
+    <>
+      <ul className="list-group" style={{ marginBottom: "50px" }}>
+        {question.answers.length > 0 ? (
+          question.answers.map((answer: string, index: number) => (
+            <li className="list-group-item" style={{ borderColor: "white" }} key={index}>
+              <input
+                type="radio"
+                name={"choice" + question._id}
+                id={question._id + index}
+                style={{ marginRight: "10px", marginBottom: "15px" }}
+                onChange={() => handleAnswerChange(question._id, answer)}
+              />
+              <label htmlFor={question._id + index}>{answer}</label>
+            </li>
+          ))
+        ) : ""}
+      </ul>
+      {showCorrectAnswers[question._id] && (
+        <div className="alert alert-info mt-2" role="alert">
+          Correct answer: {question.correctAnswer}
+        </div>
+      )}
+    </>
+  )}
+</div>
 
                     </div>
                   </li>
@@ -190,16 +211,8 @@ const StartTimeDisplay = () => {
             Your score: {score} / {quiz.points}
           </div>
         )}
-        <br/><br/><br/>
+        <br/>
 
-        <div className="p-2 mb-2" style={{ backgroundColor: "#f5f5f5", width:"100%"}}>
-          <button style={{ background: "none", border: "none", color: "red",  cursor: "pointer", padding: "0"}}>
-            <Link to={`/Kanbas/Courses/${cid}/Quizzes/${qid}/QuestionEditor`} 
-                    style={{ color: "black", textDecoration: "none" }}>
-                <PiPencil style={{transform: "scaleX(-1)"}}/> Keep Editing This Quiz
-              </Link>
-            </button>
-        </div>
       </div>
   );
 }

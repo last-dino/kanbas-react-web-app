@@ -61,6 +61,9 @@ export default function QuizDetails() {
     const navigateToQuizPreview = () => {
         navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/Preview`);
     };
+    const navigateToTakeQuiz = () => {
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/take`);
+    };
 
     return(
         <div id="wd-quizdetail" className="container mt-4">
@@ -145,11 +148,18 @@ export default function QuizDetails() {
                     <td>{formatDateForInput(quizDetails.until)}</td>
                 </tbody>
             </table>
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <button id="wd-take-quiz-btn" className="btn btn-lg btn-danger me-1 center">
-               Take Quiz
-            </button>
-         </div>
+            {role === 'STUDENT' && (
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                <button id="wd-take-quiz-btn" className="btn btn-lg btn-danger me-1 center" onClick={navigateToTakeQuiz}>
+                Take Quiz
+                </button>
+            </div>
+            )}
+            {/* {role === 'STUDENT' && attemptsLeft === 0 && (
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', color: 'red' }}>
+                    No more attempts left
+                </div>
+            )} */}
         </div>
     )
 }
