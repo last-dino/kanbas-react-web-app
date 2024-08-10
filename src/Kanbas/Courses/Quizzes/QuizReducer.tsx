@@ -12,6 +12,7 @@ const quizzesSlice = createSlice({
             state.quizzes = action.payload;
         },
         addQuizzes: (state, { payload: quiz }) => {
+            console.log("addQuizzes called")
             const newQuiz: any = {
             ...quiz,
         };

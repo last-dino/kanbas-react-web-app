@@ -19,17 +19,11 @@ export default function Courses({ courses }: { courses: any[]; }) {
     const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
     const { pathname } = useLocation();
-    const isQuizzesPage = pathname === `/Kanbas/Courses/${cid}/Quizzes`;
     return (
         <div id="wd-courses">
             <h2 className="text-danger">
                 <FaAlignJustify className="me-4 fs-4 mb-1" />
-                {course && course.name} &gt; {pathname.split("/")[4]} 
-                {isQuizzesPage && (
-                    <button className="btn btn-secondary btn-m float-end">
-                        <FaGlasses /> Student View
-                    </button>
-                )}
+                {course && course.name} &gt; {pathname.split("/")[4]}               
             </h2>
             <hr />
             <div className="d-flex">
@@ -49,7 +43,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
                         <Route path="People/:uid" element={<PeopleTable />} />
                         <Route path="Quizzes" element={<Quizzes courses={courses}/>} />
                         <Route path="Quizzes/:qid" element={<QuizDetails/>} />
-                        <Route path="Quizzes/:qid/DetailEditor" element={<QuizEditor />} />
+                        <Route path="Quizzes/:qid/QuizEditor" element={<QuizEditor />} />
                         <Route path="Quizzes/:qid/QuestionEditor" element={<QuizQuestionsEditor />} />
                         <Route path="Quizzes/:qid/QuestionEditor/new" element={<Selector />} />
                         <Route path="Quizzes/:qid/Preview" element={<Preview />} />

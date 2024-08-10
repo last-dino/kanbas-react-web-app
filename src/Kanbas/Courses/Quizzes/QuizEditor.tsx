@@ -14,13 +14,18 @@ export default function QuizEditor() {
     const initialQuiz = location.state?.quiz;
     const { quizzes } = useSelector((state: any) => state.QuizReducer);
     const [quiz, setQuiz] = useState(
-        quizzes.find((quiz: any) => quiz._id == qid) || initialQuiz
+        quizzes.find((quiz: any) => quiz._id === qid) || initialQuiz
     );
+
+    console.log("QuizEditor");
+    console.log(quizzes);
 
     const saveQuiz = async (publish: boolean) => {
         const updatedQuizData = { ...quiz, published: publish };
         if (qid === "new") {
             const createdQuiz = await client.createQuiz(cid as string, updatedQuizData);
+            console.log("createdQuiz")
+            console.log(createdQuiz)
             dispatch(addQuizzes(createdQuiz));
             if (publish) {
                 quiz.published = publish;
@@ -30,6 +35,8 @@ export default function QuizEditor() {
             }
         } else {
             const updatedQuiz = await client.updateQuiz(updatedQuizData, qid as string);
+            console.log("updatedQuiz")
+            console.log(updatedQuiz)
             dispatch(updateQuizzes(updatedQuiz));
             if (publish) {
                 navigateToQuizList();
@@ -240,13 +247,13 @@ export default function QuizEditor() {
                         <hr />
                         <div className="mb-3 row">
                             <div className="d-flex justify-content-end">
-                                <button className="btn btn-secondary me-1" onClick={navigateToQuizList}>
+                                <button type="button" className="btn btn-secondary me-1" onClick={navigateToQuizList}>
                                     Cancel
                                 </button>
-                                <button className="btn btn-danger me-1" onClick={ () => { saveQuiz(false) }}>
+                                <button type="button" className="btn btn-danger me-1" onClick={ () => { saveQuiz(false) }}>
                                     Save
                                 </button>
-                                <button className="btn btn-danger" onClick={ () => { saveQuiz(true) }}>
+                                <button type="button" className="btn btn-danger" onClick={ () => { saveQuiz(true) }}>
                                     Save and Publish
                                 </button>
                             </div>

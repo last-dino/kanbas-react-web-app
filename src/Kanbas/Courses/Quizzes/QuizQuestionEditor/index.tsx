@@ -63,7 +63,6 @@ export default function QuizQuestionsEditor() {
       <div>
           <QuizEditorButtons/>
       </div>
-      <div><h3>points: {quiz.points}</h3></div>
       <br/><br/>
       <div className="col">
         <button id="wd-add-quiz-question" className="btn btn-lg btn-secondary me-1" onClick={() => {navigate(`new`)}}
